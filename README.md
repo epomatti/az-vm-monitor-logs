@@ -10,6 +10,15 @@ For the Azure Monitor Agent, check the [requirements][1].
 - Authentication / Identity
 - Networking / Azure Firewall
 
+## Install
+
+Run the from `infra` directory:
+
+```
+terraform init
+terraform apply
+```
+
 
 
 [1]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-manage?tabs=azure-portal
