@@ -109,23 +109,3 @@ resource "azurerm_linux_virtual_machine" "main" {
     ]
   }
 }
-
-### Azure Monitor Agent Extension ###
-resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
-  name                       = "monitor-agent"
-  virtual_machine_id         = azurerm_linux_virtual_machine.main.id
-  publisher                  = "Microsoft.Azure.Monitor"
-  type                       = "AzureMonitorLinuxAgent"
-  type_handler_version       = "1.27"
-  auto_upgrade_minor_version = true
-  automatic_upgrade_enabled  = true
-}
-
-### Log Analytics ###
-resource "azurerm_log_analytics_workspace" "main" {
-  name                = "log-${var.workload}"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
-  sku                 = "PerGB2018"
-  retention_in_days   = 30
-}
