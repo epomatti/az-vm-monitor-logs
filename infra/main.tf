@@ -132,3 +132,55 @@ resource "azurerm_log_analytics_workspace" "main" {
   sku                 = "PerGB2018"
   retention_in_days   = 30
 }
+
+### Log Collection Rules ###
+
+resource "azurerm_monitor_data_collection_endpoint" "endpoint1" {
+  name                          = "example-mdce"
+  location                      = azurerm_resource_group.default.location
+  resource_group_name           = azurerm_resource_group.default.name
+  kind                          = "Linux"
+  public_network_access_enabled = true
+  description                   = "Endpoint for a Linux VM"
+}
+
+resource "azurerm_monitor_data_collection_rule" "rule_1" {
+  name                = "vm-rule-${var.workload}"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+
+  # Endpoint
+  data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.endpoint1.id
+
+  destinations {
+    log_analytics {
+      workspace_resource_id = azurerm_log_analytics_workspace.main.id
+      name                  = "test-destination-log"
+    }
+
+    azure_monitor_metrics {
+      name = "test-destination-metrics"
+    }
+  }
+
+  data_flow {
+    streams      = ["Microsoft-Syslog"]
+    destinations = ["test-destination-log"]
+  }
+
+  data_sources {
+    syslog {
+      facility_names = ["*"]
+      log_levels     = ["*"]
+      name           = "example-datasource-syslog"
+    }
+  }
+}
+
+# associate to a Data Collection Rule
+resource "azurerm_monitor_data_collection_rule_association" "association_1" {
+  name                    = "association1"
+  target_resource_id      = azurerm_linux_virtual_machine.main.id
+  data_collection_rule_id = azurerm_monitor_data_collection_rule.rule_1.id
+  description             = "Exploring data collection on Azure"
+}
