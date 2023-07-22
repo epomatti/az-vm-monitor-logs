@@ -8,15 +8,11 @@ Two methods are implemented:
 
 ## Data Collection
 
-### Requirements
-
 For the Azure Monitor Agent, check the [requirements][1].
 
 - Permissions
 - Authentication / Identity
 - Networking / Azure Firewall
-
-### Install
 
 Run the from `infra` directory:
 
@@ -24,8 +20,6 @@ Run the from `infra` directory:
 terraform init
 terraform apply
 ```
-
-### Monitoring
 
 The agent is configured via [Data Collection Rules][2]. Check the documentation for details.
 
