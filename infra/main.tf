@@ -80,8 +80,7 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   custom_data = filebase64("${path.module}/cloud-init.sh")
 
-  // Monitor Agent
-  // 
+  // Required by the Monitor agent
   identity {
     type = "SystemAssigned"
   }
@@ -112,7 +111,6 @@ resource "azurerm_linux_virtual_machine" "main" {
 }
 
 ### Azure Monitor Agent Extension ###
-
 resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
   name                       = "monitor-agent"
   virtual_machine_id         = azurerm_linux_virtual_machine.main.id
@@ -124,7 +122,6 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
 }
 
 ### Log Analytics ###
-
 resource "azurerm_log_analytics_workspace" "main" {
   name                = "log-${var.workload}"
   location            = azurerm_resource_group.default.location
@@ -134,9 +131,8 @@ resource "azurerm_log_analytics_workspace" "main" {
 }
 
 ### Log Collection Rules ###
-
 resource "azurerm_monitor_data_collection_endpoint" "endpoint1" {
-  name                          = "example-mdce"
+  name                          = "dce-${var.workload}"
   location                      = azurerm_resource_group.default.location
   resource_group_name           = azurerm_resource_group.default.name
   kind                          = "Linux"
@@ -144,8 +140,12 @@ resource "azurerm_monitor_data_collection_endpoint" "endpoint1" {
   description                   = "Endpoint for a Linux VM"
 }
 
+locals {
+  log_analytics_destination = "log-analytics-destination"
+}
+
 resource "azurerm_monitor_data_collection_rule" "rule_1" {
-  name                = "vm-rule-${var.workload}"
+  name                = "dcr-${var.workload}"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
 
@@ -155,29 +155,29 @@ resource "azurerm_monitor_data_collection_rule" "rule_1" {
   destinations {
     log_analytics {
       workspace_resource_id = azurerm_log_analytics_workspace.main.id
-      name                  = "test-destination-log"
+      name                  = local.log_analytics_destination
     }
 
-    azure_monitor_metrics {
-      name = "test-destination-metrics"
-    }
+    # azure_monitor_metrics {
+    #   name = "test-destination-metrics"
+    # }
   }
 
   data_flow {
     streams      = ["Microsoft-Syslog"]
-    destinations = ["test-destination-log"]
+    destinations = [local.log_analytics_destination]
   }
 
   data_sources {
     syslog {
       facility_names = ["*"]
       log_levels     = ["*"]
-      name           = "example-datasource-syslog"
+      name           = "syslog-datasource"
     }
   }
 }
 
-# associate to a Data Collection Rule
+# Associate to a Data Collection Rule
 resource "azurerm_monitor_data_collection_rule_association" "association_1" {
   name                    = "association1"
   target_resource_id      = azurerm_linux_virtual_machine.main.id
