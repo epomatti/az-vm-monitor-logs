@@ -41,7 +41,7 @@ Once completed, connect to the VM and check if Docker has been installed correct
 cloud-init status
 ```
 
-Use the Portal or other interface to set up VM Insights.
+Use the Portal or other interface to enable VM Insights.
 
 Download the [stressbox][4] tool to simulate resource usage:
 
