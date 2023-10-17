@@ -84,6 +84,17 @@ The OMS agent is being deprecated in favor of the Azure Monitor Agent, which is 
 
 The [Network Watcher Agent extension][9] is required by some features of Network Watcher, such as capturing network traffic on demand, and other advanced functionality.
 
+Sentinel:
+ - Microsoft Defender for Cloud - Allows the ingestion of Microsoft Defender for Cloud.
+ - Microsoft Threat Intelligence - Threat indicators can be malicious IP's, URL's, filehashes, domains, email addresses etc.
+
+https://learn.microsoft.com/en-us/azure/sentinel/connect-services-api-based
+https://learn.microsoft.com/en-us/azure/sentinel/connect-services-diagnostic-setting-based
+https://learn.microsoft.com/en-us/azure/sentinel/connect-services-windows-based
+
+
+
+
 [1]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-manage?tabs=azure-portal
 [2]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal
 [3]: https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview

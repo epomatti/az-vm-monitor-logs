@@ -41,6 +41,11 @@ resource "azurerm_sentinel_log_analytics_workspace_onboarding" "default" {
   workspace_id = azurerm_log_analytics_workspace.default.id
 }
 
+# resource "azurerm_sentinel_data_connector_threat_intelligence" "threat" {
+#   name                       = "ThreatIntelligence"
+#   log_analytics_workspace_id = azurerm_sentinel_log_analytics_workspace_onboarding.default.workspace_id
+# }
+
 module "extension" {
   count  = var.monitor_agent_enabled == true ? 1 : 0
   source = "./modules/extension"
