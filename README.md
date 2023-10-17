@@ -76,9 +76,13 @@ Large infrastructure landscapes should consider Log Analytics Workspace [archite
 
 Operational data is the scope for Azure Monitor. Security data is handle by Microsoft Defender for Cloud (inspector) and Microsoft Sentinel (threat intelligence).
 
+There is a [Diagnostics Extensions][7] available that collects Metrics, Syslog, and Files, and publish them to a storage. There are several [prerequisites][8] (or limitations) and really there are other options available.
+
 [1]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-manage?tabs=azure-portal
 [2]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal
 [3]: https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview
 [4]: https://github.com/epomatti/stressbox
 [5]: https://learn.microsoft.com/en-us/azure/azure-monitor/vm/monitor-virtual-machine
 [6]: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/workspace-design
+[7]: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/diagnostics-linux?toc=%2Fazure%2Fazure-monitor%2Ftoc.json&tabs=azcli
+[8]: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/diagnostics-linux?toc=%2Fazure%2Fazure-monitor%2Ftoc.json&tabs=azcli#prerequisites
