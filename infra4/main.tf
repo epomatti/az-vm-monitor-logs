@@ -32,3 +32,14 @@ module "vm" {
   image_sku     = var.vm_image_sku
   image_version = var.vm_image_version
 }
+
+module "extension" {
+  source   = "./modules/extension"
+  workload = var.workload
+  location = azurerm_resource_group.default.location
+  group    = azurerm_resource_group.default.name
+
+  vm_id = module.vm.vm_id
+}
+
+
