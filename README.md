@@ -58,7 +58,27 @@ Simulate CPU consumption:
 for i in {1..100}; do curl 0:8080/cpu?x=42; done
 ```
 
+## Example 3
+
+From the [documentation][5]:
+
+- Virtual machine host
+- Guest operating system
+- Workloads
+- Applications
+
+Configuration steps covered here:
+
+1. Deploy Azure Monitor agent - Deploy the Azure Monitor agent to your Azure and hybrid virtual machines to collect data from the guest operating system and workloads.
+2. Configure data collection - Create data collection rules to instruct the Azure Monitor agent to collect telemetry from the guest operating system.
+
+Large infrastructure landscapes should consider Log Analytics Workspace [architecture designs][6].
+
+Operational data is the scope for Azure Monitor. Security data is handle by Microsoft Defender for Cloud (inspector) and Microsoft Sentinel (threat intelligence).
+
 [1]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-manage?tabs=azure-portal
 [2]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal
 [3]: https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview
 [4]: https://github.com/epomatti/stressbox
+[5]: https://learn.microsoft.com/en-us/azure/azure-monitor/vm/monitor-virtual-machine
+[6]: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/workspace-design
