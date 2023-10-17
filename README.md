@@ -78,6 +78,10 @@ Operational data is the scope for Azure Monitor. Security data is handle by Micr
 
 There is a [Diagnostics Extensions][7] available that collects Metrics, Syslog, and Files, and publish them to a storage. There are several [prerequisites][8] (or limitations) and really there are other options available.
 
+The OMS agent is being deprecated in favor of the Azure Monitor Agent, which is used in this example.
+
+The [Network Watcher Agent extension][9] is required by some features of Network Watcher, such as capturing network traffic on demand, and other advanced functionality.
+
 [1]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-manage?tabs=azure-portal
 [2]: https://learn.microsoft.com/en-us/azure/azure-monitor/agents/data-collection-rule-azure-monitor-agent?tabs=portal
 [3]: https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview
@@ -86,3 +90,4 @@ There is a [Diagnostics Extensions][7] available that collects Metrics, Syslog, 
 [6]: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/workspace-design
 [7]: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/diagnostics-linux?toc=%2Fazure%2Fazure-monitor%2Ftoc.json&tabs=azcli
 [8]: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/diagnostics-linux?toc=%2Fazure%2Fazure-monitor%2Ftoc.json&tabs=azcli#prerequisites
+[9]: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/network-watcher-linux?toc=%2Fazure%2Fnetwork-watcher%2Ftoc.json
