@@ -3,8 +3,10 @@
 Native monitoring with Azure VMs using the Azure Monitor Agent.
 
 Two methods are implemented:
-- Data collection (direct configuration with Terraform)
-- Monitor VM Insights
+
+- `infra` - Data collection (direct configuration with Terraform)
+- `infra2` - Monitor VM Insights
+- `infra3` - Custom Logs / Application + Diagnosis (incoming)
 
 ## Data Collection
 
