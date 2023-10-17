@@ -27,13 +27,10 @@ module "vm" {
 
   subnet_id = module.vnet.subnet_id
   size      = var.vm_size
-
-  image_offer   = var.vm_image_offer
-  image_sku     = var.vm_image_sku
-  image_version = var.vm_image_version
 }
 
 module "extension" {
+  count    = var.monitor_agent_enabled == true ? 1 : 0
   source   = "./modules/extension"
   workload = var.workload
   location = azurerm_resource_group.default.location
