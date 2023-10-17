@@ -30,11 +30,8 @@ module "vm" {
 }
 
 module "extension" {
-  count    = var.monitor_agent_enabled == true ? 1 : 0
-  source   = "./modules/extension"
-  workload = var.workload
-  location = azurerm_resource_group.default.location
-  group    = azurerm_resource_group.default.name
+  count  = var.monitor_agent_enabled == true ? 1 : 0
+  source = "./modules/extension"
 
   vm_id = module.vm.vm_id
 }
