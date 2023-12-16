@@ -1,4 +1,4 @@
-# Azure VM Monitoring with the Azure Monitor Agent (AMA)
+# Azure VM monitoring
 
 Native monitoring with Azure VMs using the Azure Monitor Agent (AMA).
 
