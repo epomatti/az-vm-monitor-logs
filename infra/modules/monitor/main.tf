@@ -2,13 +2,24 @@ locals {
   log_analytics_destination = "log-analytics-destination"
 }
 
+### Log Collection Rules ###
+resource "azurerm_monitor_data_collection_endpoint" "endpoint1" {
+  name                          = "dce-${var.workload}"
+  location                      = var.location
+  resource_group_name           = var.resource_group_name
+  kind                          = "Linux"
+  public_network_access_enabled = true
+  description                   = "Terraform Linux VM"
+}
+
 resource "azurerm_monitor_data_collection_rule" "rule_1" {
   name                = "dcr-${var.workload}"
   location            = var.location
   resource_group_name = var.resource_group_name
+  kind                = "Linux"
 
   # Endpoint
-  # data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.endpoint1.id
+  data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.endpoint1.id
 
   destinations {
     log_analytics {
@@ -55,5 +66,4 @@ resource "azurerm_monitor_data_collection_rule_association" "association_1" {
   target_resource_id      = var.vm_id
   data_collection_rule_id = azurerm_monitor_data_collection_rule.rule_1.id
   description             = "Exploring data collection on Azure"
-  # data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.endpoint1.id
 }

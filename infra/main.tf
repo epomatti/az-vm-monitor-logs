@@ -51,13 +51,3 @@ module "monitor" {
   log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
   vm_id                      = module.vm.vm_id
 }
-
-### Log Collection Rules ###
-# resource "azurerm_monitor_data_collection_endpoint" "endpoint1" {
-#   name                          = "dce-${var.workload}"
-#   location                      = azurerm_resource_group.default.location
-#   resource_group_name           = azurerm_resource_group.default.name
-#   kind                          = "Linux"
-#   public_network_access_enabled = true
-#   description                   = "Endpoint for a Linux VM"
-# }
