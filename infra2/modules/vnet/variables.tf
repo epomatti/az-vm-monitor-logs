@@ -2,7 +2,7 @@ variable "workload" {
   type = string
 }
 
-variable "group" {
+variable "resource_group_name" {
   type = string
 }
 

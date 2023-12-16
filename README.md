@@ -22,13 +22,12 @@ Run the from `./infra1` directory:
 
 ```sh
 terraform init
-terraform apply
+terraform apply -auto-approve
 ```
 
 The agent is configured via [Data Collection Rules][2]. Check the documentation for details.
 
 Collection options are `Linux Syslog`, `Performance Counters`,  and custom `TXT` or `JSON`.
-
 
 ## Infra 2 - VM Insights
 
@@ -36,22 +35,22 @@ Another method of monitoring VMs is via [Monitor VM Insights][3]
 
 The startup code is in the `./infra2` directory:
 
-```
+```sh
 terraform init
-terraform apply
+terraform apply -auto-approve
 ```
 
 Once completed, connect to the VM and check if Docker has been installed correctly.
 
-```
+```sh
 cloud-init status
 ```
 
-Use the Portal or other interface to enable VM Insights.
+Use the Portal or other interface to enable **VM Insights**.
 
 Download the [stressbox][4] tool to simulate resource usage:
 
-```
+```sh
 sudo docker pull ghcr.io/epomatti/stressbox
 sudo docker run -d -p 8080:8080 ghcr.io/epomatti/stressbox
 ```
