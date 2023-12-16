@@ -15,7 +15,7 @@ Different methods are implemented in this repository:
 For the Azure Monitor Agent, check the [requirements][1].
 
 - Permissions
-- Authentication / Identity
+- Authentication / Identity (Managed Identity)
 - Networking / Azure Firewall
 
 Run the from `./infra1` directory:
@@ -26,6 +26,8 @@ terraform apply
 ```
 
 The agent is configured via [Data Collection Rules][2]. Check the documentation for details.
+
+Collection options are `Linux Syslog`, `Performance Counters`,  and custom `TXT` or `JSON`.
 
 
 ## Infra 2 - VM Insights
