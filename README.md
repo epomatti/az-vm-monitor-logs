@@ -51,13 +51,13 @@ Use the Portal or other interface to enable **VM Insights**.
 Download the [stressbox][4] tool to simulate resource usage:
 
 ```sh
-sudo docker pull ghcr.io/epomatti/stressbox
-sudo docker run -d -p 8080:8080 ghcr.io/epomatti/stressbox
+sudo docker pull epomatti/stressbox:arm64
+sudo docker run -d -p 8080:8080 epomatti/stressbox:arm64
 ```
 
 Simulate CPU consumption:
 
-```
+```sh
 for i in {1..100}; do curl 0:8080/cpu?x=42; done
 ```
 
