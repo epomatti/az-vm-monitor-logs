@@ -1,14 +1,14 @@
-# Azure VM + Monitor Agent
+# Azure VM Monitoring with the Azure Monitor Agent (AMA)
 
-Native monitoring with Azure VMs using the Azure Monitor Agent.
+Native monitoring with Azure VMs using the Azure Monitor Agent (AMA).
 
-Two methods are implemented:
+Different methods are implemented in this repository:
 
-- `infra` - Data collection (direct configuration with Terraform)
-- `infra2` - Monitor VM Insights
-- `infra3` - Custom Logs / Application + Diagnosis (incoming)
+- `/infra` - Data collection (direct configuration with Terraform)
+- `/infra2` - Monitor VM Insights
+- `/infra3` - Custom Logs / Application + Diagnosis (incoming)
 
-## Data Collection
+## Infra 1️ - Data Collection Rules
 
 For the Azure Monitor Agent, check the [requirements][1].
 
@@ -18,7 +18,7 @@ For the Azure Monitor Agent, check the [requirements][1].
 
 Run the from `infra` directory:
 
-```
+```sh
 terraform init
 terraform apply
 ```
@@ -26,7 +26,7 @@ terraform apply
 The agent is configured via [Data Collection Rules][2]. Check the documentation for details.
 
 
-## VM Insights
+## Infra 2 - VM Insights
 
 Another method of monitoring VMs is via [Monitor VM Insights][3]
 

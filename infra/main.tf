@@ -1,18 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-  backend "local" {
-    path = ".workspace/terraform.tfstate"
-  }
-}
-
-provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
+      source  = "hashicorp/azurerm"
+      version = "3.85.0"
     }
   }
 }
@@ -24,101 +14,22 @@ resource "azurerm_resource_group" "default" {
 }
 
 ### Network ###
-
-resource "azurerm_virtual_network" "default" {
-  name                = "vnet-${var.workload}"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.default.location
+module "vnet" {
+  source              = "./modules/vnet"
   resource_group_name = azurerm_resource_group.default.name
-}
-
-resource "azurerm_subnet" "default" {
-  name                 = "subnet-default"
-  resource_group_name  = azurerm_resource_group.default.name
-  virtual_network_name = azurerm_virtual_network.default.name
-  address_prefixes     = ["10.0.0.0/24"]
+  location            = azurerm_resource_group.default.location
+  workload            = var.workload
 }
 
 ### Virtual Machine ###
-
-resource "azurerm_public_ip" "main" {
-  name                = "pip-${var.workload}"
-  location            = azurerm_resource_group.default.location
+module "vm" {
+  source              = "./modules/vm"
   resource_group_name = azurerm_resource_group.default.name
-  allocation_method   = "Static"
-}
-
-resource "azurerm_network_interface" "main" {
-  name                = "nic-${var.workload}"
   location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
+  workload            = var.workload
 
-  ip_configuration {
-    name                          = "default"
-    subnet_id                     = azurerm_subnet.default.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.main.id
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-locals {
-  admin_username = "azureuser"
-}
-
-resource "azurerm_linux_virtual_machine" "main" {
-  name                  = "vm-${var.workload}"
-  location              = azurerm_resource_group.default.location
-  resource_group_name   = azurerm_resource_group.default.name
-  size                  = var.vm_size
-  admin_username        = local.admin_username
-  admin_password        = "P@ssw0rd.123"
-  network_interface_ids = [azurerm_network_interface.main.id]
-
-  custom_data = filebase64("${path.module}/cloud-init.sh")
-
-  // Required by the Monitor agent
-  identity {
-    type = "SystemAssigned"
-  }
-
-  admin_ssh_key {
-    username   = local.admin_username
-    public_key = file("~/.ssh/id_rsa.pub")
-  }
-
-  os_disk {
-    name                 = "osdisk-${var.workload}"
-    caching              = "ReadWrite"
-    storage_account_type = "StandardSSD_LRS"
-  }
-
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = var.vm_image_offer
-    sku       = var.vm_image_sku
-    version   = var.vm_image_version
-  }
-
-  lifecycle {
-    ignore_changes = [
-      custom_data
-    ]
-  }
-}
-
-### Azure Monitor Agent Extension ###
-resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
-  name                       = "monitor-agent"
-  virtual_machine_id         = azurerm_linux_virtual_machine.main.id
-  publisher                  = "Microsoft.Azure.Monitor"
-  type                       = "AzureMonitorLinuxAgent"
-  type_handler_version       = "1.27"
-  auto_upgrade_minor_version = true
-  automatic_upgrade_enabled  = true
+  subnet_id = module.vnet.subnet_id
+  vm_size   = var.vm_size
 }
 
 ### Log Analytics ###
@@ -130,6 +41,17 @@ resource "azurerm_log_analytics_workspace" "main" {
   retention_in_days   = 30
 }
 
+### Monitor ###
+module "monitor" {
+  source              = "./modules/monitor"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  workload            = var.workload
+
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  vm_id                      = module.vm.vm_id
+}
+
 ### Log Collection Rules ###
 # resource "azurerm_monitor_data_collection_endpoint" "endpoint1" {
 #   name                          = "dce-${var.workload}"
@@ -139,63 +61,3 @@ resource "azurerm_log_analytics_workspace" "main" {
 #   public_network_access_enabled = true
 #   description                   = "Endpoint for a Linux VM"
 # }
-
-locals {
-  log_analytics_destination = "log-analytics-destination"
-}
-
-resource "azurerm_monitor_data_collection_rule" "rule_1" {
-  name                = "dcr-${var.workload}"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
-
-  # Endpoint
-  # data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.endpoint1.id
-
-  destinations {
-    log_analytics {
-      workspace_resource_id = azurerm_log_analytics_workspace.main.id
-      name                  = local.log_analytics_destination
-    }
-
-    # This was in preview
-    # azure_monitor_metrics {
-    #   name = "metrics-destination"
-    # }
-  }
-
-  data_flow {
-    streams      = ["Microsoft-Syslog"]
-    destinations = [local.log_analytics_destination]
-  }
-
-  data_flow {
-    streams      = ["Microsoft-InsightsMetrics", "Microsoft-Perf"]
-    destinations = [local.log_analytics_destination]
-  }
-
-  data_sources {
-
-    syslog {
-      facility_names = ["auth", "cron", "daemon", "kern", "syslog", "user", "local0"]
-      log_levels     = ["Debug"]
-      name           = "syslog-datasource"
-    }
-
-    performance_counter {
-      streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
-      sampling_frequency_in_seconds = 60
-      counter_specifiers            = ["Processor(*)\\% Processor Time"]
-      name                          = "perfcounter-datasource"
-    }
-  }
-}
-
-# Associate to a Data Collection Rule
-resource "azurerm_monitor_data_collection_rule_association" "association_1" {
-  name                    = "association1"
-  target_resource_id      = azurerm_linux_virtual_machine.main.id
-  data_collection_rule_id = azurerm_monitor_data_collection_rule.rule_1.id
-  description             = "Exploring data collection on Azure"
-  # data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.endpoint1.id
-}
