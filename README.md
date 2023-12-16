@@ -10,7 +10,7 @@ Different methods are implemented in this repository:
 
 ## Infra 1️ - Data Collection Rules
 
-<img src=".assets/monitor1.png" />
+<img src=".assets/monitor1.png" width=650 />
 
 For the Azure Monitor Agent, check the [requirements][1].
 
