@@ -1,16 +1,41 @@
 ### General ###
+variable "subscription_id" {
+  type = string
+}
+
 variable "workload" {
-  type    = string
-  default = "airdata2"
+  type = string
 }
 
 variable "location" {
-  type    = string
-  default = "eastus2"
+  type = string
 }
 
 ### VM ###
 variable "vm_size" {
-  type    = string
-  default = "Standard_B2pts_v2"
+  type = string
+}
+
+variable "vm_admin_username" {
+  type = string
+}
+
+variable "vm_public_key_path" {
+  type = string
+}
+
+variable "vm_image_publisher" {
+  type = string
+}
+
+variable "vm_image_offer" {
+  type = string
+}
+
+variable "vm_image_sku" {
+  type = string
+}
+
+variable "vm_image_version" {
+  type = string
 }

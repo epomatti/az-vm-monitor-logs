@@ -1,3 +1,3 @@
 output "ssh_command" {
-  value = "ssh ${module.vm.admin_username}@${module.vm.public_ip_address}"
+  value = "ssh ${var.vm_admin_username}@${module.vm.public_ip_address}"
 }

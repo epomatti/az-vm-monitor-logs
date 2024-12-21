@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.85.0"
+      version = "4.14.0"
     }
   }
 }
@@ -28,6 +28,13 @@ module "vm" {
   location            = azurerm_resource_group.default.location
   workload            = var.workload
 
-  subnet_id = module.vnet.subnet_id
-  vm_size   = var.vm_size
+  subnet_id       = module.vnet.subnet_id
+  vm_size         = var.vm_size
+  admin_username  = var.vm_admin_username
+  public_key_path = var.vm_public_key_path
+
+  image_publisher = var.vm_image_publisher
+  image_offer     = var.vm_image_offer
+  image_sku       = var.vm_image_sku
+  image_version   = var.vm_image_version
 }

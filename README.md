@@ -8,6 +8,12 @@ Different methods are implemented in this repository:
 - `/infra2` - Monitor VM Insights
 - `/infra3` - Custom Logs / Application + Diagnosis (incoming)
 
+To setup each project variables:
+
+```sh
+cp config/local.auto.tfvars .auto.tfvars
+```
+
 ## Infra 1️ - Data Collection Rules
 
 <img src=".assets/monitor1.png" width=650 />
@@ -32,6 +38,12 @@ Collection options are `Linux Syslog`, `Performance Counters`,  and custom `TXT`
 ## Infra 2 - VM Insights
 
 Another method of monitoring VMs is via [Monitor VM Insights][3]
+
+Create the keys:
+
+```sh
+mkdir .keys && ssh-keygen -f .keys/temp_rsa
+```
 
 The startup code is in the `./infra2` directory:
 
