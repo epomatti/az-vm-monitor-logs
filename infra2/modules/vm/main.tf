@@ -64,12 +64,22 @@ resource "azurerm_linux_virtual_machine" "main" {
 
 ### Azure Monitor Agent Extension ###
 # Pre-installing so VM Insights don't have to
-resource "azurerm_virtual_machine_extension" "AzureMonitorLinuxAgent" {
-  name                       = "AzureMonitorLinuxAgent"
-  virtual_machine_id         = azurerm_linux_virtual_machine.main.id
-  publisher                  = "Microsoft.Azure.Monitor"
-  type                       = "AzureMonitorLinuxAgent"
-  type_handler_version       = "1.33"
-  auto_upgrade_minor_version = true
-  automatic_upgrade_enabled  = true
-}
+# resource "azurerm_virtual_machine_extension" "AzureMonitorLinuxAgent" {
+#   name                       = "AzureMonitorLinuxAgent"
+#   virtual_machine_id         = azurerm_linux_virtual_machine.main.id
+#   publisher                  = "Microsoft.Azure.Monitor"
+#   type                       = "AzureMonitorLinuxAgent"
+#   type_handler_version       = "1.33"
+#   auto_upgrade_minor_version = true
+#   automatic_upgrade_enabled  = true
+# }
+
+# resource "azurerm_virtual_machine_extension" "daa-agent" {
+#   name                       = "DependencyAgentLinux"
+#   virtual_machine_id         = azurerm_linux_virtual_machine.main.id
+#   publisher                  = "Microsoft.Azure.Monitoring.DependencyAgent"
+#   type                       = "DependencyAgentWindows"
+#   type_handler_version       = "9.10"
+#   automatic_upgrade_enabled  = true
+#   auto_upgrade_minor_version = true
+# }

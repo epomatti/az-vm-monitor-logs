@@ -58,7 +58,10 @@ Once completed, connect to the VM and check if Docker has been installed correct
 cloud-init status
 ```
 
-Use the Portal or other interface to enable **VM Insights**.
+> [!TIP]
+> VM Insights automation is possible following the [ARM template](https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-enable?tabs=arm) by Microsoft.
+
+For convenience, use the Portal or other interface to enable **VM Insights**.
 
 Download the [stressbox][4] tool to simulate resource usage:
 
