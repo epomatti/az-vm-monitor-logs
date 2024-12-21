@@ -38,3 +38,10 @@ module "vm" {
   image_sku       = var.vm_image_sku
   image_version   = var.vm_image_version
 }
+
+module "monitor" {
+  source              = "./modules/monitor"
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  workload            = var.workload
+}

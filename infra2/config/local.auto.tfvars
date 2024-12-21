@@ -4,7 +4,7 @@ workload        = "airdata2"
 location        = "eastus2"
 
 # Virtual Machine
-vm_size            = "Standard_B2pts_v2"
+vm_size            = "Standard_B2pls_v2"
 vm_admin_username  = "azureuser"
 vm_public_key_path = ".keys/temp_rsa.pub"
 vm_image_publisher = "Canonical"

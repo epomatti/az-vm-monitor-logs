@@ -5,7 +5,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt update
 apt upgrade -y
 
-ubuntuRelease="22.04"
+ubuntuRelease="24.04"
 
 wget "https://packages.microsoft.com/config/ubuntu/$ubuntuRelease/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb
 dpkg -i packages-microsoft-prod.deb
